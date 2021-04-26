@@ -6,6 +6,7 @@
 
 //declarando variaveis globais
 typedef struct{//struct para as dados de cada pessoa
+//    to usando um struct pra fins de uma suposta manutencao no codigo, ja que se o pro
     char sex; //guarda o sexo do cliente
     int age; //guarda a idade do cliente
 }pessoa;
@@ -19,9 +20,9 @@ int num_M,num_F;// numero de pessoas do sexo masculino e numero de pessoas do se
 char filme[105];//string pro nome do filme transmitido
 
 //declarando funcoes (me recuso a encher com mais comentario aqui)
-int getsAge();
-char getsSex();
-void getsPessoas(),getsFilme(),getsSessoes();
+int getsAge(void);
+char getsSex(void);
+void getsPessoas(void),getsFilme(void),getsSessoes(void);
 
 int main()//funcao main (por incrivel que pareca)
 {
@@ -59,6 +60,17 @@ int main()//funcao main (por incrivel que pareca)
     printf("\nEsse filme foi assistido por um total de %d pessoas, sendo elas:\n", pessoas);//interagindo com o usuario
     printf("\n %d pessoas do sexo masculino e %d pessoas do sexo feminino\n",num_M,num_F);//interagindo com usuario
     printf("\n%d Criancas\n%d Adolescentes\n%d Adultos\n%d Idosos\n", num_crianca,num_adolescente,num_adulto,num_idoso);//interagindo com o usuario
+    printf("\nATENCAo professora Joyce, a implementacao bonus eh essa:\n");//interagindo com a usuaria Joyce
+    
+    for(int i=0;i<pessoas;i++)//loop pra printar as informacoes
+    {
+        //printa o sexo e a idade de cada cliente
+        //o objetivo dessa implementacao e printar informacoes mais detalhadas
+        //pros donos do cinema terem informacoes mais especificas pra trabalhar
+        if(cliente[i].sex == 'F') printf("\nCliente %d do sexo biologico MASCULINO tem %d anos de idade.\n",i+1,cliente[i].age);//printa se for feminino
+        else printf("\nCliente %d do sexo biologico FEMININO tem %d anos de idade.\n",i+1,cliente[i].age);//printa se for masculino
+    }
+    
     getsSessoes();//funcao pra pegar o numero de sessoes
     //essa funcao esta sendo usada agora para que o output aconteca de acordo com o pdf de instrucoes enviado pela professora
     system("cls");//limpando o terminal
@@ -126,7 +138,7 @@ int getsAge()//pega a idade de cada cliente e retorna o valor
     printf("----------------------------------------------------------------------------\n");//linha pra dividir as telas
     printf("Por favor informe sua idade:\n");//interagindo com o usuario
     scanf("%d", &idade);//le idade
-    fflush(stdin);//limpar buffer   
+    fflush(stdin);//limpar buffer
     while(idade<3 || idade>100)//loop pra corrigir input
     {
         printf("Valor invalido para idade, apenas valores de 3 a 100 serao aceitos\n");//interagindo com o usuario
