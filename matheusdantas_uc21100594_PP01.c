@@ -60,7 +60,7 @@ int main()//funcao main (por incrivel que pareca)
     printf("\nEsse filme foi assistido por um total de %d pessoas, sendo elas:\n", pessoas);//interagindo com o usuario
     printf("\n %d pessoas do sexo masculino e %d pessoas do sexo feminino\n",num_M,num_F);//interagindo com usuario
     printf("\n%d Criancas\n%d Adolescentes\n%d Adultos\n%d Idosos\n", num_crianca,num_adolescente,num_adulto,num_idoso);//interagindo com o usuario
-    printf("\nATENCAo professora Joyce, a implementacao bonus eh essa:\n");//interagindo com a usuaria Joyce
+    printf("\nATENCAO professora Joyce, a implementacao bonus eh essa:\n");//interagindo com a usuaria Joyce
     
     for(int i=0;i<pessoas;i++)//loop pra printar as informacoes
     {
@@ -90,9 +90,10 @@ void getsFilme()//pega o nome do filme e guarda em uma variavel global
     printf("Qual o nome do filme?\n");//interagindo com o usuario
     fgets(filme, 105, stdin);//le a variavel filme
     fflush(stdin);//limpar buffer
-    while(strcmp(filme,"\n")==0 || strcmp(filme,"vazio\n")==0)//loop pra corrigir input
+    while(strcmp(filme,"\n")==0 || strcmp(filme,"vazio\n")==0 || filme[0] == ' ')//loop pra corrigir input
     {
         printf("o filme precisa de nome e precisa ser diferente de vazio\n");// feedback pro usuario
+        printf("o nome tambem nao pode comecar com barra de espaco\n");// feedback pro usuario
         fgets(filme, 105, stdin);//le a variavel filme
         fflush(stdin);//limpar buffer
     }
