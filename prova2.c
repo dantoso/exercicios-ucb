@@ -105,7 +105,7 @@ void mapaAviao(){//mostra mapa do aviao com assentos reservados disponiveis e ve
 int idadeCliente()//pega a idade de cada cliente e retorna o valor
 {
     int idade;
-    printf("POR FAVOR INFORME SUA IDADE: ");
+    printf("INFORME IDADE DO CLIENTE: ");
     scanf("%d", &idade);
     fflush(stdin);
     while(idade<3 || idade>100)//loop pra corrigir input
