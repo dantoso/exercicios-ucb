@@ -5,11 +5,18 @@
 #include<ctype.h>//biblioteca pra mexer em char
 
 int numAssentos = 0;
-char destino[50], lugares[205];
-float passagem = 0.0;
+char destino[50];
+float passagem = 0.0, rendaTotal = 0.0;
 
-int reservar(char *ptr, int id), idadeCliente(void);
+int reservar(char *ptr, int id), idadeCliente(void), idAssento(void);
 void defVoo(void), mapaAviao(void);
+
+typedef struct {
+    char status;
+    float preco;
+}assento;
+
+assento assentos[205];
 
 int main(){
     setlocale(LC_ALL, "Portuguese");
@@ -18,21 +25,22 @@ int main(){
 
     defVoo();
     for(i=0;i<numAssentos;i++){
-        lugares[i] = 'D';
+        assentos[i].status = 'D';
     }
     system("cls");
 
-    while(entrarMenu == toupper('s')){
+    while(toupper(entrarMenu) != 'N'){
         printf("\n\n");
         printf("\nMENU\n");
         printf("\nPRESSIONE M PARA VERIFICAR MAPA DE OCUPAÇÃO DO VOO\n");
         printf("\nPRESSIONE R PARA EFETUAR RESERVA\n");
         printf("\nPRESSIONE C PARA CANCELAR UMA RESERVA\n");
         printf("\nPRESSIONE T PARA CONSULTAR VALOR DE VENDAS E QUANTIDADE DE ASSENTOS\n");
+        printf("\nPRESSIONE QUALQUER OUTRA TECLA PARA SAIR DO MENU E ENCERRAR O PROGRAMA.")
         scanf("%c",&opcaoMenu);
         fflush(stdin);
 
-        if(opcaoMenu == toupper('m')){
+        if(toupper(opcaoMenu) == 'M'){
             system("cls");
             printf("---- MAPA DE OCUPAÇÃO DO VOO ----\n\n\n");
             mapaAviao();
@@ -42,18 +50,39 @@ int main(){
             scanf("%c",&opcaoMenu);
             fflush(stdin);
         }
-        else if(opcaoMenu == toupper('r')){
+        else if(toupper(opcaoMenu) == 'R'){
             system("cls");
             idade = idadeCliente();
-            printf("---- MAPA DE OCUPAÇÃO DO VOO ----\n\n\n");
-            mapaAviao();
-            printf("-------------------------------\n\n\n");
+            
+            while(reservar(assentos, id-1)){
+                printf("---- MAPA DE OCUPAÇÃO DO VOO ----\n\n\n");
+                mapaAviao();
+                printf("-------------------------------\n\n\n");
+                printf("ESCOLHA UM ASSENTO DISPONÍVEL (D)\n");
+                printf("DIGITE O NÚMERO DO ASSENTO REQUERIDO: ");
+                scanf("%d",&id);
+                fflush(stdin);
+                system("cls");
+            }
+            if(idade>5){
+                assento[id-1].preco = passagem;
+            }
+            else{
+                assento[id-1].preco = passagem/2;
+            }
+            printf("ESSE SERÁ O PREÇO DA PASSAGEM: R$ %f.2\n", assento[id-1].preco);
+            printf("O ASSENTO AINDA NÃO FOI COMPRADO, PARA CONCLUIR A VENDA, VÁ PARA O MENU E PRESSIONE C\n")
         }
-        else if(opcaoMenu == toupper('c')){
+        else if(toupper(opcaoMenu) == 'C'){
             
         }
-        else if(opcaoMenu == toupper('t')){
+        else if(otoupper(opcaoMenu) == 'T'){
             
+        }
+        else{
+            printf("VOCÊ DESEJA CONTINUAR NO MENU? \n(DIGITE N PARA SAIR, QUALQUER OUTRA TECLA TE LEVARÁ DE VOLTA AO MENU)\n");
+            scanf("%c",&entrarMenu);
+            fflush(stdin);
         }
     }
 }
@@ -78,20 +107,24 @@ void defVoo(){//define quantos assentos o aviao possui, preco da passagem e o de
     }
 }
 
-int reservar(char *ptr, int id){//reserva um lugar no voo, caso o lugar esteja ocupado retorna false, caso nao retorna true e reserva o lugar
-    if(*(ptr+id) == 'D'){
-        *(ptr+id) = 'R';
-        printf("ASSENTO %d RESERVADO COM SUCESSO\n", id+1);
+int reservar(char *ptr, int idArray){//reserva um lugar no voo, caso o lugar esteja ocupado retorna false, caso nao retorna true e reserva o lugar
+    if(idArray<1 || idArray>=numAssentos){
+        printf("O ASSENTO REQUSITADO É INEXISTENTE PARA ESSA AERONAVE,\nPOR FAVOR, ESCOLHA OUTRO LUGAR\n");
+        return 0;//retorna false
+    }
+    if(*(ptr+idArray).status == 'D'){
+        *(ptr+idArray).status = 'R';
+        printf("ASSENTO %d RESERVADO COM SUCESSO\n", idArray+1);
         return 1;//retorna true
     }
-    printf("O ASSENTO REQUSITADO JÁ ESTÁ RESERVADO OU VENDIDO, POR FAVOR, ESCOLHA OUTRO LUGAR\n");
+    printf("O ASSENTO REQUSITADO JÁ ESTÁ RESERVADO OU VENDIDO,\nPOR FAVOR, ESCOLHA OUTRO LUGAR\n");
     return 0;//retorna false
 }
 
 void mapaAviao(){//mostra mapa do aviao com assentos reservados disponiveis e vendidos
     int i;
     for(i=0;i<numAssentos;i++){//para cada assento no aviao
-        printf("%c ", i+1,lugares[i]);
+        printf("%c ", i+1,assentos[i].status);
         if((i+1)%3==0){//se o numero e divisivel por 3
             if((i+1)%2==0){//se o numero e divisivel por 6
                 printf("\n");// acaba uma fileira
@@ -108,11 +141,20 @@ int idadeCliente()//pega a idade de cada cliente e retorna o valor
     printf("INFORME IDADE DO CLIENTE: ");
     scanf("%d", &idade);
     fflush(stdin);
-    while(idade<3 || idade>100)//loop pra corrigir input
+    while(idade<=0 || idade>110)//loop pra corrigir input
     {
-        printf("VALOR INVALIDO PARA IDADE, APENAS VALORES DE 0 A 110 SERAO ACEITOS\n");
+        printf("VALOR INVÁLIDO PARA IDADE, APENAS VALORES DE 0 A 110 SERÃO ACEITOS\n");
         scanf("%d", &idade);
         fflush(stdin);
     }
     return idade;
+}
+
+int idAssento(){
+    int id;
+    printf("ESCOLHA UM ASSENTO DISPONÍVEL (D)\n");
+    printf("DIGITE O NÚMERO DO ASSENTO REQUERIDO: ");
+    scanf("%d",&id);
+    fflush(stdin);
+    while(id);
 }
