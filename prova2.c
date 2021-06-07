@@ -114,5 +114,5 @@ int idadeCliente()//pega a idade de cada cliente e retorna o valor
         scanf("%d", &idade);
         fflush(stdin);
     }
-    return idade;//retorna idade (nao se assuste, eu sei que eh muita informacao em um unico comentario)
+    return idade;
 }
